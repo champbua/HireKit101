@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>HireKit 101</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Mitr:wght@400;500;600&display=swap">
+<style>
+/* Layout: one friendly scrolling page — sticky bar, hero with a kit preview, then sections; the builder is a form + sticky action panel on wide screens, stacked on phones. */
+:root {
+  --bg: #F2F6F4;
+  --surface: #FFFFFF;
+  --ink: #17302B;
+  --muted: #566C67;
+  --line: #D6E2DE;
+  --accent: #0E6B62;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #DCEFEA;
+  --sun: #E9A92C;
+  --sun-soft: #FCEFD3;
+  --danger: #B0412C;
+  --danger-soft: #F8E2DC;
+  --font-display: "Mitr", "IBM Plex Sans Thai", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r-card: 16px;
+  --r-ctl: 10px;
+  --wrap: 1120px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1614; --surface: #15201D; --ink: #E3EEEA; --muted: #9BB0AA; --line: #2A3A36;
+    --accent: #5CC6B6; --accent-ink: #0A1A17; --accent-soft: #1B3430;
+    --sun: #E6B44C; --sun-soft: #3A2F1C; --danger: #E68A74; --danger-soft: #3B231D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1614; --surface: #15201D; --ink: #E3EEEA; --muted: #9BB0AA; --line: #2A3A36;
+  --accent: #5CC6B6; --accent-ink: #0A1A17; --accent-soft: #1B3430;
+  --sun: #E6B44C; --sun-soft: #3A2F1C; --danger: #E68A74; --danger-soft: #3B231D;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.65; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 500; line-height: 1.25; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(1.6rem, 3.2vw, 2.1rem); }
+h3 { font-size: 1.12rem; }
+p { margin: 0; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; border-radius: 6px; }
+.muted { color: var(--muted); }
+.eyebrow { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--accent); }
+
+/* Top bar */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; gap: 16px; padding-block: 10px; }
+.brand { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.brand .mark { width: 30px; height: 30px; border-radius: 9px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-size: .85rem; }
+.brand .num { color: var(--accent); }
+.nav { display: flex; gap: 18px; margin-left: auto; }
+.nav a { color: var(--muted); text-decoration: none; font-size: .92rem; }
+.nav a:hover { color: var(--ink); }
+.lang { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; }
+.lang button { border: 0; background: transparent; color: var(--muted); font: 600 .82rem var(--font-body); padding: 4px 11px; border-radius: 999px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+@media (max-width: 860px) { .nav { display: none; } .lang { margin-left: auto; } }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; padding: 11px 20px; font: 600 1rem var(--font-body); text-decoration: none; cursor: pointer; border: 1.5px solid transparent; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--accent); }
+.btn-small { padding: 7px 14px; font-size: .9rem; }
+
+/* Hero */
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; padding-block: 56px 48px; }
+.hero h1 { font-size: clamp(2.6rem, 6vw, 4rem); font-weight: 600; letter-spacing: -.01em; }
+.hero h1 .num { color: var(--accent); }
+.hero .sub { font-family: var(--font-display); font-size: clamp(1.2rem, 2.4vw, 1.5rem); margin-top: 10px; }
+.hero .tag { margin-top: 6px; font-style: italic; color: var(--muted); }
+.hero .body { margin-top: 18px; max-width: 34em; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.hero .meta { margin-top: 16px; font-size: .88rem; color: var(--muted); }
+.kitcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px; box-shadow: 0 10px 30px -18px rgba(14, 60, 54, .35); min-width: 0; }
+.kitcard h3 { font-size: 1rem; margin-bottom: 12px; }
+.kitlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.kitlist li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.kitlist .n { width: 28px; height: 28px; border-radius: 8px; background: var(--accent-soft); color: var(--accent); font: 600 .85rem var(--font-display); display: grid; place-items: center; }
+.kitlist b { display: block; font-weight: 600; line-height: 1.3; }
+.kitlist span { font-size: .88rem; color: var(--muted); }
+.kitlist .opt b::after { content: " · optional"; font-weight: 400; font-size: .78rem; color: var(--muted); }
+:root[lang="th"] .kitlist .opt b::after { content: " · ไม่บังคับ"; }
+.tiers { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); }
+.tiers h4 { margin: 0 0 10px; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tierrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.tier { border-radius: 12px; padding: 10px; font-size: .8rem; line-height: 1.4; min-width: 0; }
+.tier b { display: block; font-size: .88rem; margin-bottom: 4px; }
+.tier.t1 { background: var(--danger-soft); }
+.tier.t1 b { color: var(--danger); }
+.tier.t2 { background: var(--accent-soft); }
+.tier.t2 b { color: var(--accent); }
+.tier.t3 { background: var(--sun-soft); }
+.dots { display: flex; gap: 4px; margin-top: 6px; }
+.dots i { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--accent); font: normal 600 .62rem/13px var(--font-body); text-align: center; color: var(--accent); }
+.dots i.on { background: var(--accent); color: var(--accent-ink); }
+@media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; gap: 32px; padding-block: 36px 32px; } }
+@media (max-width: 420px) { .tierrow { grid-template-columns: 1fr; } }
+
+/* Sections */
+section.block { padding-block: 56px; }
+section.block + section.block { border-top: 1px solid var(--line); }
+.head { display: grid; gap: 10px; max-width: 46em; margin-bottom: 28px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 860px) { .grid3 { grid-template-columns: 1fr; } }
+.why-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 20px; display: grid; gap: 8px; align-content: start; }
+.why-item .ic { width: 40px; height: 40px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; }
+.evidence { margin-top: 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; background: var(--sun-soft); border-radius: var(--r-card); padding: 16px 20px; }
+.evidence .bars { display: grid; gap: 6px; min-width: 210px; flex: 0 0 auto; }
+.evidence .bar-row { display: grid; grid-template-columns: 96px 1fr 34px; gap: 8px; align-items: center; font-size: .78rem; }
+.evidence .track { height: 10px; background: var(--surface); border-radius: 99px; overflow: hidden; width: 120px; }
+.evidence .fill { height: 100%; background: var(--accent); border-radius: 99px; }
+.evidence .fill.lo { background: var(--muted); }
+.evidence .txt { flex: 1 1 260px; min-width: 0; }
+.evidence small { display: block; color: var(--muted); margin-top: 4px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: s; }
+.steps li { display: grid; gap: 6px; padding-left: 52px; position: relative; }
+.steps li::before { counter-increment: s; content: counter(s); position: absolute; left: 0; top: 0; width: 38px; height: 38px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font: 600 1.05rem/38px var(--font-display); text-align: center; }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+
+/* Builder */
+.builder-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
+@media (max-width: 960px) { .builder-wrap { grid-template-columns: 1fr; } }
+.privacy { display: flex; gap: 10px; align-items: flex-start; background: var(--accent-soft); border-radius: 12px; padding: 12px 14px; font-size: .92rem; }
+form.kitform { display: grid; gap: 22px; }
+fieldset { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r-card); padding: 20px; margin: 0; display: grid; gap: 16px; min-width: 0; }
+legend { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; padding: 0 6px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label, .field .lbl { font-weight: 600; font-size: .95rem; }
+.req { color: var(--danger); margin-left: 2px; }
+.help { font-size: .84rem; color: var(--muted); }
+input[type="text"], textarea, select { width: 100%; font: 400 .98rem var(--font-body); color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: var(--r-ctl); padding: 10px 12px; }
+textarea { min-height: 84px; resize: vertical; }
+textarea#f-jd { min-height: 110px; }
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); background: var(--surface); }
+.invalid { border-color: var(--danger) !important; background: var(--danger-soft) !important; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 560px) { .two { grid-template-columns: 1fr; } }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips input { position: absolute; opacity: 0; pointer-events: none; }
+.chips label { border: 1.5px solid var(--line); border-radius: 999px; padding: 7px 14px; font-weight: 500; font-size: .92rem; cursor: pointer; background: var(--bg); }
+.chips input:checked + label { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.chips input:focus-visible + label { outline: 3px solid var(--sun); outline-offset: 2px; }
+
+.panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 72px); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 20px; display: grid; gap: 14px; box-shadow: 0 12px 34px -22px rgba(14, 60, 54, .45); min-width: 0; }
+@media (max-width: 960px) { .panel { position: static; } }
+.panel .btn-primary { width: 100%; padding-block: 14px; font-size: 1.05rem; }
+.status { font-size: .9rem; min-height: 1.4em; }
+.status.ok { color: var(--accent); font-weight: 600; }
+.status.bad { color: var(--danger); }
+.missing { margin: 4px 0 0; padding-left: 18px; font-size: .88rem; color: var(--danger); }
+.ailinks { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: .9rem; }
+.ailinks a { border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; text-decoration: none; color: var(--ink); font-weight: 500; }
+.ailinks a:hover { border-color: var(--accent); }
+.panel-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: var(--danger-soft); border-radius: 10px; padding: 8px 10px; font-size: .9rem; }
+.saved { font-size: .8rem; color: var(--muted); }
+details.preview summary { cursor: pointer; font-weight: 600; font-size: .92rem; color: var(--accent); }
+details.preview textarea { margin-top: 10px; min-height: 220px; font: .76rem/1.5 var(--font-mono); background: var(--bg); }
+
+/* Never ask */
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .93rem; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+th { font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; }
+td:nth-child(2) { color: var(--danger); }
+.stdq { margin-top: 18px; display: grid; gap: 8px; border-left: 4px solid var(--accent); background: var(--surface); border-radius: 0 var(--r-card) var(--r-card) 0; padding: 16px 20px; }
+.stdq q { font-size: 1.02rem; quotes: none; }
+.rule { margin-top: 14px; font-weight: 600; }
+.law { margin-top: 10px; font-size: .8rem; color: var(--muted); }
+
+/* AI rules */
+.ai-item { display: grid; gap: 6px; padding: 18px 20px; border-radius: var(--r-card); background: var(--surface); border: 1px solid var(--line); }
+.ai-item.warn { background: var(--danger-soft); border-color: transparent; }
+
+/* Checklist */
+.cl { display: grid; gap: 12px; }
+.cl details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 4px 20px; }
+.cl summary { cursor: pointer; padding: 12px 0; font-family: var(--font-display); font-size: 1.05rem; }
+.cl ul { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; }
+.cl li label { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; cursor: pointer; }
+.cl input[type="checkbox"] { width: 18px; height: 18px; margin-top: 4px; accent-color: var(--accent); }
+
+footer { border-top: 1px solid var(--line); background: var(--surface); }
+footer .wrap { padding-block: 32px 40px; display: grid; gap: 14px; font-size: .88rem; color: var(--muted); }
+footer ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+footer .ver { font-family: var(--font-mono); font-size: .8rem; }
+</style>
+
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="HireKit 101"><span class="mark">HK</span><span>HireKit <span class="num">101</span></span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#why" data-i18n="nav.why"></a>
+      <a href="#how" data-i18n="nav.how"></a>
+      <a href="#build" data-i18n="nav.start"></a>
+      <a href="#never" data-i18n="nav.dont"></a>
+      <a href="#checklist" data-i18n="nav.check"></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lang-th" data-lang="th">ไทย</button>
+      <button type="button" id="lang-en" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow" data-i18n="hero.eyebrow"></p>
+        <h1>HireKit <span class="num">101</span></h1>
+        <p class="sub" data-i18n="hero.sub"></p>
+        <p class="tag" data-i18n="hero.tag"></p>
+        <p class="body" data-i18n="hero.body"></p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="#build" data-i18n="hero.cta"></a>
+          <a class="btn btn-ghost" href="#why" data-i18n="hero.cta2"></a>
+        </div>
+        <p class="meta" data-i18n="hero.meta"></p>
+      </div>
+      <aside class="kitcard" aria-labelledby="kit-title">
+        <h3 id="kit-title" data-i18n="kit.title"></h3>
+        <ol class="kitlist">
+          <li><span class="n">1</span><div><b data-i18n="kit.1.t"></b><span data-i18n="kit.1.d"></span></div></li>
+          <li class="opt"><span class="n">2</span><div><b data-i18n="kit.2.t"></b><span data-i18n="kit.2.d"></span></div></li>
+          <li><span class="n">3</span><div><b data-i18n="kit.3.t"></b><span data-i18n="kit.3.d"></span></div></li>
+          <li><span class="n">4</span><div><b data-i18n="kit.4.t"></b><span data-i18n="kit.4.d"></span></div></li>
+          <li><span class="n">5</span><div><b data-i18n="kit.5.t"></b><span data-i18n="kit.5.d"></span></div></li>
+        </ol>
+        <div class="tiers">
+          <h4 data-i18n="tier.title"></h4>
+          <div class="tierrow">
+            <div class="tier t1"><b data-i18n="tier.1.t"></b><span data-i18n="tier.1.d"></span></div>
+            <div class="tier t2"><b data-i18n="tier.2.t"></b><span data-i18n="tier.2.d"></span>
+              <div class="dots" aria-hidden="true"><i>1</i><i>2</i><i>3</i><i class="on">4</i><i>5</i></div></div>
+            <div class="tier t3"><b data-i18n="tier.3.t"></b><span data-i18n="tier.3.d"></span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block" id="why">
+    <div class="wrap">
+      <div class="head">
+        <h2 data-i18n="why.title"></h2>
+        <p class="muted" data-i18n="why.lead"></p>
+      </div>
+      <div class="grid3">
+        <article class="why-item">
+          <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg></span>
+          <h3 data-i18n="why.1.t"></h3><p class="muted" data-i18n="why.1.d"></p>
+        </article>
+        <article class="why-item">
+          <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+          <h3 data-i18n="why.2.t"></h3><p class="muted" data-i18n="why.2.d"></p>
+        </article>
+        <article class="why-item">
+          <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span>
+          <h3 data-i18n="why.3.t"></h3><p class="muted" data-i18n="why.3.d"></p>
+        </article>
+      </div>
+      <div class="evidence">
+        <div class="bars" aria-hidden="true">
+          <div class="bar-row"><span>Structured</span><span class="track"><span class="fill" style="display:block;width:84%"></span></span><b>0.42</b></div>
+          <div class="bar-row"><span>Unstructured</span><span class="track"><span class="fill lo" style="display:block;width:38%"></span></span><b>0.19</b></div>
+        </div>
+        <p class="txt"><span data-i18n="why.evidence"></span><small data-i18n="why.source"></small></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="how">
+    <div class="wrap">
+      <div class="head"><h2 data-i18n="how.title"></h2></div>
+      <ol class="steps">
+        <li><h3 data-i18n="how.1.t"></h3><p class="muted" data-i18n="how.1.d"></p></li>
+        <li><h3 data-i18n="how.2.t"></h3><p class="muted" data-i18n="how.2.d"></p></li>
+        <li><h3 data-i18n="how.3.t"></h3><p class="muted" data-i18n="how.3.d"></p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="build">
+    <div class="wrap">
+      <div class="head">
+        <h2 data-i18n="b.title"></h2>
+        <p class="muted" data-i18n="b.lead"></p>
+        <p class="privacy"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex:0 0 auto;margin-top:2px;color:var(--accent)"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span data-i18n="b.privacy"></span></p>
+      </div>
+      <div class="builder-wrap">
+        <form class="kitform" id="kitform" novalidate>
+          <fieldset>
+            <legend data-i18n="b.g1"></legend>
+            <div class="field"><label for="f-role"><span data-i18n="f.role.l"></span><span class="req">*</span></label><input type="text" id="f-role" data-req data-i18n-ph="f.role.p"></div>
+            <div class="two">
+              <div class="field"><label for="f-level"><span data-i18n="f.level.l"></span><span class="req">*</span></label><select id="f-level" data-req data-opts="level"></select></div>
+              <div class="field"><label for="f-family"><span data-i18n="f.family.l"></span><span class="req">*</span></label><select id="f-family" data-req data-opts="family"></select></div>
+            </div>
+            <div class="field" id="wrap-familyOther" hidden><label for="f-familyOther"><span data-i18n="f.familyOther.l"></span><span class="req">*</span></label><input type="text" id="f-familyOther" data-i18n-ph="f.familyOther.p"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend data-i18n="b.g2"></legend>
+            <div class="field"><label for="f-mission"><span data-i18n="f.mission.l"></span><span class="req">*</span></label><input type="text" id="f-mission" data-req data-i18n-ph="f.mission.p"></div>
+            <div class="field"><label for="f-outcomes"><span data-i18n="f.outcomes.l"></span><span class="req">*</span></label><textarea id="f-outcomes" data-req data-i18n-ph="f.outcomes.p"></textarea></div>
+          </fieldset>
+
+          <fieldset>
+            <legend data-i18n="b.g3"></legend>
+            <div class="field"><label for="f-best"><span data-i18n="f.best.l"></span><span class="req">*</span></label><p class="help" data-i18n="f.best.h"></p><textarea id="f-best" data-req data-i18n-ph="f.best.p"></textarea></div>
+            <div class="field"><label for="f-failed" data-i18n="f.failed.l"></label><textarea id="f-failed" data-i18n-ph="f.failed.p"></textarea></div>
+            <div class="field"><label for="f-deal" data-i18n="f.deal.l"></label><input type="text" id="f-deal" data-i18n-ph="f.deal.p"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend data-i18n="b.g4"></legend>
+            <div class="field"><label for="f-jd" data-i18n="f.jd.l"></label><p class="help" data-i18n="f.jd.h"></p><textarea id="f-jd" data-i18n-ph="f.jd.p"></textarea></div>
+          </fieldset>
+
+          <fieldset>
+            <legend data-i18n="b.g5"></legend>
+            <div class="field"><span class="lbl" id="lbl-length"><span data-i18n="f.length.l"></span><span class="req">*</span></span><div class="chips" role="radiogroup" aria-labelledby="lbl-length" data-chips="length"></div><p class="help" data-i18n="f.length.h"></p></div>
+            <div class="field"><span class="lbl" id="lbl-who"><span data-i18n="f.who.l"></span><span class="req">*</span></span><div class="chips" role="radiogroup" aria-labelledby="lbl-who" data-chips="who"></div></div>
+            <div class="field"><span class="lbl" id="lbl-lang"><span data-i18n="f.lang.l"></span><span class="req">*</span></span><div class="chips" role="radiogroup" aria-labelledby="lbl-lang" data-chips="lang"></div></div>
+          </fieldset>
+        </form>
+
+        <aside class="panel" aria-label="Copy prompt">
+          <button type="button" class="btn btn-primary" id="btn-copy"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span data-i18n="act.copy"></span></button>
+          <div class="status" id="status" role="status" aria-live="polite"></div>
+          <div class="ailinks"><span class="muted" data-i18n="act.open"></span>
+            <a href="https://gemini.google.com/app" target="_blank" rel="noopener">Gemini</a>
+            <a href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT</a>
+            <a href="https://claude.ai/new" target="_blank" rel="noopener">Claude</a>
+          </div>
+          <div class="panel-row">
+            <button type="button" class="btn btn-ghost btn-small" id="btn-example" data-i18n="act.example"></button>
+            <button type="button" class="btn btn-ghost btn-small" id="btn-clear" data-i18n="act.clear"></button>
+          </div>
+          <div class="confirm" id="confirm" hidden>
+            <span data-i18n="act.clearAsk"></span>
+            <button type="button" class="btn btn-primary btn-small" id="btn-clear-yes" data-i18n="act.clearYes"></button>
+            <button type="button" class="btn btn-ghost btn-small" id="btn-clear-no" data-i18n="act.clearNo"></button>
+          </div>
+          <p class="saved" id="saved" hidden data-i18n="act.saved"></p>
+          <details class="preview" id="preview">
+            <summary data-i18n="act.preview"></summary>
+            <textarea id="prompt-out" readonly aria-label="Prompt"></textarea>
+          </details>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="never">
+    <div class="wrap">
+      <div class="head">
+        <h2 data-i18n="dont.title"></h2>
+        <p class="muted" data-i18n="dont.lead"></p>
+      </div>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th data-i18n="dont.c1"></th><th data-i18n="dont.c2"></th><th data-i18n="dont.c3"></th></tr></thead>
+          <tbody id="dont-rows"></tbody>
+        </table>
+      </div>
+      <div class="stdq">
+        <b data-i18n="dont.std.t"></b>
+        <q data-i18n="dont.std.q"></q>
+        <p class="muted" data-i18n="dont.std.n"></p>
+      </div>
+      <p class="rule" data-i18n="dont.rule"></p>
+      <p class="law" data-i18n="dont.law"></p>
+
+      <div class="head" style="margin-top:44px"><h2 data-i18n="ai.title"></h2></div>
+      <div class="grid3">
+        <div class="ai-item"><h3 data-i18n="ai.1.t"></h3><p class="muted" data-i18n="ai.1.d"></p></div>
+        <div class="ai-item warn"><h3 data-i18n="ai.2.t"></h3><p data-i18n="ai.2.d"></p></div>
+        <div class="ai-item"><h3 data-i18n="ai.3.t"></h3><p class="muted" data-i18n="ai.3.d"></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="checklist">
+    <div class="wrap">
+      <div class="head">
+        <h2 data-i18n="cl.title"></h2>
+        <p class="muted" data-i18n="cl.lead"></p>
+      </div>
+      <div class="cl">
+        <details open><summary data-i18n="cl.before"></summary><ul data-list="cl.before.items"></ul></details>
+        <details><summary data-i18n="cl.during"></summary><ul data-list="cl.during.items"></ul></details>
+        <details><summary data-i18n="cl.after"></summary><ul data-list="cl.after.items"></ul></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p data-i18n="ft.privacy"></p>
+    <p class="ver"><span data-i18n="ft.version"></span> <span id="ver"></span></p>
+    <div><b data-i18n="ft.refs"></b><ol id="refs"></ol></div>
+    <p data-i18n="ft.disclaimer"></p>
+  </div>
+</footer>
+
+<script src="content.js"></script>
+<script src="prompt.js"></script>
+<script>
+(function () {
+  var T = window.HK_TEXT, O = T.options;
+  var FIELDS = ["role", "level", "family", "familyOther", "mission", "outcomes", "best", "failed", "deal", "jd"];
+  var CHIPS = ["length", "who", "lang"];
+  var lang = "th";
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } }
+  function $(id) { return document.getElementById(id); }
+  function t(k) { return (T[lang] && T[lang][k] !== undefined) ? T[lang][k] : k; }
+
+  function buildControls() {
+    document.querySelectorAll("select[data-opts]").forEach(function (sel) {
+      var cur = sel.value, key = sel.getAttribute("data-opts");
+      sel.innerHTML = "";
+      var ph = document.createElement("option"); ph.value = ""; ph.textContent = "—"; sel.appendChild(ph);
+      O[key].forEach(function (o) { var op = document.createElement("option"); op.value = o.v; op.textContent = o[lang]; sel.appendChild(op); });
+      sel.value = cur;
+    });
+    document.querySelectorAll("[data-chips]").forEach(function (box) {
+      var key = box.getAttribute("data-chips");
+      var checked = (box.querySelector("input:checked") || {}).value;
+      box.innerHTML = "";
+      O[key].forEach(function (o, i) {
+        var id = "c-" + key + "-" + i;
+        var inp = document.createElement("input"); inp.type = "radio"; inp.name = key; inp.id = id; inp.value = o.v;
+        var lab = document.createElement("label"); lab.htmlFor = id; lab.textContent = o[lang] + (key === "length" ? " " + t("opt.min") : "");
+        box.appendChild(inp); box.appendChild(lab);
+        if (checked === o.v) inp.checked = true;
+      });
+    });
+  }
+
+  function applyLang(l) {
+    lang = (l === "en") ? "en" : "th";
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) { el.textContent = t(el.getAttribute("data-i18n")); });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function (el) { el.placeholder = t(el.getAttribute("data-i18n-ph")); });
+    $("lang-th").setAttribute("aria-pressed", lang === "th"); $("lang-en").setAttribute("aria-pressed", lang === "en");
+    var tb = $("dont-rows"); tb.innerHTML = "";
+    t("dont.rows").forEach(function (r) { var tr = document.createElement("tr"); r.forEach(function (c) { var td = document.createElement("td"); td.textContent = c; tr.appendChild(td); }); tb.appendChild(tr); });
+    document.querySelectorAll("[data-list]").forEach(function (ul) {
+      var key = ul.getAttribute("data-list"), was = [];
+      ul.querySelectorAll("input").forEach(function (c) { was.push(c.checked); });
+      ul.innerHTML = "";
+      t(key).forEach(function (item, i) {
+        var li = document.createElement("li"), lab = document.createElement("label"), cb = document.createElement("input"), sp = document.createElement("span");
+        cb.type = "checkbox"; cb.id = key.replace(/\W/g, "-") + "-" + i; cb.checked = !!was[i];
+        sp.textContent = item; lab.appendChild(cb); lab.appendChild(sp); li.appendChild(lab); ul.appendChild(li);
+      });
+    });
+    buildControls();
+    store("hk-lang", lang);
+    render();
+  }
+
+  function val(k) {
+    if (CHIPS.indexOf(k) > -1) { var c = document.querySelector('input[name="' + k + '"]:checked'); return c ? c.value : ""; }
+    var el = $("f-" + k); return el ? el.value.trim() : "";
+  }
+
+  function missing() {
+    var out = [];
+    document.querySelectorAll("[data-req]").forEach(function (el) { if (!el.value.trim()) out.push(el); });
+    if (val("family") === "Other" && !val("familyOther")) out.push($("f-familyOther"));
+    CHIPS.forEach(function (k) { if (!val(k)) out.push(document.querySelector('[data-chips="' + k + '"]')); });
+    return out;
+  }
+
+  function labelOf(el) {
+    var key = el.getAttribute("data-chips");
+    if (key) return t("f." + key + ".l");
+    return t("f." + el.id.replace("f-", "") + ".l");
+  }
+
+  function buildPrompt() {
+    var fam = val("family") === "Other" ? "Other: " + val("familyOther") : val("family");
+    var jd = val("jd");
+    var lines = [
+      "- Role title / team: " + val("role"),
+      "- Level: " + val("level"),
+      "- Role family: " + fam,
+      "- Mission (why this role exists): " + val("mission"),
+      "- 3–5 things this person must deliver in 6–12 months: " + val("outcomes"),
+      "- Best person in this role — what did they actually DO?: " + val("best"),
+      "- A hire that failed — what went wrong? (optional): " + (val("failed") || "(not given)"),
+      "- Deal-breakers I already know (optional): " + (val("deal") || "(not given)"),
+      "- Job description (optional): " + (jd ? "\n\"\"\"\n" + jd + "\n\"\"\"" : "(none)"),
+      "- Interview length: " + (val("length") ? val("length") + " min" : ""),
+      "- Who interviews: " + val("who"),
+      "- Output language: " + val("lang")
+    ];
+    return window.HK_PROMPT + "\n## 7. MY INPUTS\n" + lines.join("\n") + "\n\nStart now with Stage 1.\n";
+  }
+
+  function render() {
+    $("wrap-familyOther").hidden = val("family") !== "Other";
+    $("prompt-out").value = buildPrompt();
+  }
+
+  function saveDraft() {
+    var d = {};
+    FIELDS.forEach(function (k) { d[k] = val(k); });
+    CHIPS.forEach(function (k) { d[k] = val(k); });
+    store("hk-draft", JSON.stringify(d));
+    $("saved").hidden = false;
+  }
+  function loadDraft(d) {
+    FIELDS.forEach(function (k) { var el = $("f-" + k); if (el) el.value = d[k] || ""; });
+    CHIPS.forEach(function (k) { document.querySelectorAll('input[name="' + k + '"]').forEach(function (r) { r.checked = (r.value === d[k]); }); });
+  }
+
+  function setStatus(msg, cls, list) {
+    var s = $("status"); s.className = "status " + (cls || ""); s.textContent = msg;
+    if (list && list.length) {
+      var ul = document.createElement("ul"); ul.className = "missing";
+      list.forEach(function (x) { var li = document.createElement("li"); li.textContent = x; ul.appendChild(li); });
+      s.appendChild(ul);
+    }
+  }
+
+  function copy() {
+    document.querySelectorAll(".invalid").forEach(function (el) { el.classList.remove("invalid"); });
+    var miss = missing();
+    if (miss.length) {
+      miss.forEach(function (el) { if (el.matches("input,textarea,select")) el.classList.add("invalid"); });
+      setStatus(t("act.missing"), "bad", miss.map(labelOf));
+      var first = miss[0]; if (first.focus) { first.scrollIntoView({ block: "center" }); try { first.focus({ preventScroll: true }); } catch (e) {} }
+      return;
+    }
+    var text = buildPrompt(); $("prompt-out").value = text;
+    function fallback() { $("preview").open = true; var ta = $("prompt-out"); ta.focus(); ta.select(); setStatus(t("act.copyFail"), "bad"); }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { setStatus(t("act.copied"), "ok"); }, fallback);
+      } else { fallback(); }
+    } catch (e) { fallback(); }
+  }
+
+  // wire up
+  document.querySelectorAll(".lang button").forEach(function (b) { b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang")); }); });
+  var form = $("kitform");
+  form.addEventListener("submit", function (e) { e.preventDefault(); });
+  form.addEventListener("input", function (e) { if (e.target.classList) e.target.classList.remove("invalid"); render(); saveDraft(); });
+  form.addEventListener("change", function () { render(); saveDraft(); });
+  $("btn-copy").addEventListener("click", copy);
+  $("btn-example").addEventListener("click", function () { loadDraft(T.example[lang]); render(); saveDraft(); setStatus("", ""); });
+  $("btn-clear").addEventListener("click", function () { $("confirm").hidden = false; });
+  $("btn-clear-no").addEventListener("click", function () { $("confirm").hidden = true; });
+  $("btn-clear-yes").addEventListener("click", function () {
+    loadDraft({ length: "45", who: "Just me", lang: lang === "en" ? "English" : "Thai" });
+    store("hk-draft", null); $("confirm").hidden = true; $("saved").hidden = true; setStatus("", ""); render();
+  });
+
+  var refs = $("refs"); T.refs.forEach(function (r) { var li = document.createElement("li"); li.textContent = r; refs.appendChild(li); });
+  $("ver").textContent = "v" + (window.HK_PROMPT_VERSION || "?");
+
+  var startLang = store("hk-lang") || "th";
+  applyLang(startLang);
+  var draft = null; try { draft = JSON.parse(store("hk-draft") || "null"); } catch (e) {}
+  loadDraft(draft || { length: "45", who: "Just me", lang: startLang === "en" ? "English" : "Thai" });
+  render();
+})();
+</script>
+
+</body>
+</html>
